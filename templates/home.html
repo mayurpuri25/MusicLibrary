@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Winky Sans', Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+        .user-area, .subscription-area, .query-area {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .logout-link {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .subscription-item, .query-result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .music-info {
+            flex: 1;
+        }
+        .music-info h5 {
+            margin: 0;
+        }
+        .artist-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logout-link">
+    <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+</div>
+
+<div class="user-area">
+    <h4>Welcome, <span id="user-name">[User_Name]</span>!</h4>
+</div>
+
+<div class="subscription-area">
+    <h4>Your Subscribed Songs</h4>
+    <div id="subscription-list">
+        <!-- Subscription items dynamically populated here -->
+        <!-- Example of subscription item:
+        -->
+        <div class="subscription-item">
+            <img src="artist_image_url.jpg" class="artist-img">
+            <div class="music-info">
+                <h5>Title - Artist</h5>
+                <small>Album (Year)</small>
+            </div>
+            <button class="btn btn-danger btn-small">Remove</button>
+        </div>
+        <p class="text-muted">No subscriptions yet.</p>
+    </div>
+</div>
+
+<div class="query-area">
+    <h4>Query Songs</h4>
+    <form id="query-form">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Title" name="title">
+            </div>
+            <div class="col-md-2">
+                <input type="text" class="form-control" placeholder="Year" name="year">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Artist" name="artist">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Album" name="album">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary">Query</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="query-results" class="mt-3">
+        <!-- Query results dynamically populated here -->
+        <!-- Example of query result item:
+        -->
+        <div class="query-result-item">
+            <img src="artist_image_url.jpg" class="artist-img">
+            <div class="music-info">
+                <h5>Title - Artist</h5>
+                <small>Album (Year)</small>
+            </div>
+            <button class="btn btn-success btn-small">Subscribe</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
