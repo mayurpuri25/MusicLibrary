@@ -5,7 +5,6 @@ import requests
 app = Flask(__name__)
 app.secret_key = "your_very_secret_key_here"
 
-
 # Global cache-control headers – applied to every response
 @app.after_request
 def add_header(response):
@@ -16,8 +15,9 @@ def add_header(response):
 
 @app.route('/')
 def home():
-    if 'username' in session:
-        return render_template('home.html', username=session['username'])
+    if 'username' in session and 'email' in session:
+        # Pass both username and email to the template
+        return render_template('home.html', username=session['username'], email=session['email'])
     else:
         return redirect(url_for('login'))
 
@@ -28,15 +28,25 @@ def login():
         password = request.form['password']
         try:
             # Make GET request with email and password as query params
-            response = requests.get("https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/user", params={'email': email, 'password': password})
+            response = requests.get("https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/user",
+                                    params={'email': email, 'password': password})
             result = response.json()
 
             if response.status_code == 200:
-                # Login successful
-                session['username'] = result.get('username')
-                # flash('Login successful!', 'success')
-                # time.sleep(2)  # optional
-                return redirect(url_for('home'))
+                # Login successful: store username and email in session
+                username = result.get('username')
+                session['username'] = username
+                session['email'] = email
+
+                # Optionally delay (if needed)
+                time.sleep(1)
+
+                # Create response, set cookies for username and email, then redirect to home
+                resp = make_response(redirect(url_for('home')))
+                resp.set_cookie('username', username)
+                resp.set_cookie('email', email)
+                return resp
+
             elif response.status_code == 401:
                 flash('Incorrect password!', 'error')
             elif response.status_code == 404:
@@ -86,8 +96,15 @@ def register():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)  # Remove the user session
-    return redirect(url_for('login'))
+    # Remove session keys for username and email
+    session.pop('username', None)
+    session.pop('email', None)
+    
+    # Create response for redirection and delete cookies
+    resp = make_response(redirect(url_for('login')))
+    resp.delete_cookie('username')
+    resp.delete_cookie('email')
+    return resp
 
 if __name__ == "__main__":
     app.run(debug=True)

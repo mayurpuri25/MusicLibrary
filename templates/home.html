@@ -7,36 +7,56 @@
     <meta http-equiv="Expires" content="0" />
     <title>Home Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Winky+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Winky Sans', Arial, sans-serif;
             padding: 20px;
-            background-color: #f7f9fc;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee, #84fab0, #8fd3f4);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .user-area, .subscription-area, .query-area {
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             margin-bottom: 20px;
             padding: 20px;
+            color: #333;
         }
+
         .logout-link {
             text-align: right;
             margin-bottom: 20px;
         }
+
         .subscription-item, .query-result-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255,255,255,0.5);
         }
+
         .music-info {
             flex: 1;
         }
+
         .music-info h5 {
             margin: 0;
         }
+
         .artist-img {
             width: 60px;
             height: 60px;
@@ -44,22 +64,28 @@
             object-fit: cover;
             margin-right: 15px;
         }
+
         .btn-small {
             padding: 5px 10px;
             font-size: 14px;
         }
+
+        input[type="text"] {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            border-radius: 8px;
+        }
     </style>
+
     <script>
-        // Disable Chrome's back-forward cache by using an empty onunload event.
         window.onunload = function() {};
-  
-        // Force a reload when the page is shown from cache (e.g., using the back button)
+
         window.addEventListener("pageshow", function(event) {
             if (event.persisted) {
                 window.location.reload();
             }
         });
-      </script>
+    </script>
 </head>
 <body>
 
@@ -68,15 +94,12 @@
 </div>
 
 <div class="user-area">
-    <h4>Welcome, <span id="user-name">[User_Name]</span>!</h4>
+    <h4>Welcome, <span id="user-name">{{ username }}</span>!</h4>
 </div>
 
 <div class="subscription-area">
     <h4>Your Subscribed Songs</h4>
     <div id="subscription-list">
-        <!-- Subscription items dynamically populated here -->
-        <!-- Example of subscription item:
-        -->
         <div class="subscription-item">
             <img src="artist_image_url.jpg" class="artist-img">
             <div class="music-info">
@@ -112,9 +135,6 @@
     </form>
 
     <div id="query-results" class="mt-3">
-        <!-- Query results dynamically populated here -->
-        <!-- Example of query result item:
-        -->
         <div class="query-result-item">
             <img src="artist_image_url.jpg" class="artist-img">
             <div class="music-info">
