@@ -31,6 +31,19 @@ def home():
         return render_template('home.html', username=session['username'], email=session['email'])
     else:
         return redirect(url_for('login'))
+    
+@app.route('/unsubscribe_song', methods=['POST'])
+def unsubscribe_song():
+    data = request.json
+    try:
+        res = requests.post("https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/unsubscribe", json=data)
+        res.raise_for_status()
+        return jsonify({"message": "Unsubscribed successfully"}), 200
+    except Exception as e:
+        print("Unsubscribe error:", e)
+        return jsonify({"error": "Unsubscribe failed"}), 500
+
+
 
 @app.route('/song_image/<path:image_key>')
 def song_image(image_key):

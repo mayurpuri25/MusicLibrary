@@ -121,11 +121,17 @@
 </div>
 
 <script>
-    let currentPage = 1;
-    const limit = 6;
+    const subscribedSet = new Set();
+    let lastFetchedSongs = [];
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
 
     async function fetchSongs(filters = {}) {
-        let url = new URL('/songs', window.location.origin);
+        const url = new URL('/songs', window.location.origin);
         Object.keys(filters).forEach(key => url.searchParams.append(key, filters[key]));
         url.searchParams.append('page', currentPage);
         url.searchParams.append('limit', limit);
@@ -134,20 +140,17 @@
             <div class="d-flex justify-content-center align-items-center my-4">
                 <div class="spinner-border text-primary" role="status"></div>
                 <span class="ms-2 fw-semibold">Loading songs...</span>
-            </div>
-        `;
+            </div>`;
 
         try {
             const response = await fetch(url);
             const data = await response.json();
+            lastFetchedSongs = data.results;
             populateSongs(data.results);
             renderPagination(data.total, data.page);
         } catch (error) {
-            document.getElementById('query-results').innerHTML = `
-                <div class="alert alert-danger text-center fw-semibold" role="alert">
-                    Failed to load songs. Please try again.
-                </div>`;
             console.error("Error loading songs:", error);
+            document.getElementById('query-results').innerHTML = `<div class="alert alert-danger">Failed to load songs.</div>`;
         }
     }
 
@@ -155,90 +158,35 @@
         const resultsContainer = document.getElementById('query-results');
         resultsContainer.innerHTML = '';
 
-        if (!songs || songs.length === 0) {
-            resultsContainer.innerHTML = `
-                <div class="alert alert-warning text-center fw-semibold" role="alert">
-                    No result is retrieved. Please query again.
-                </div>`;
-            return;
-        }
-
         songs.forEach(song => {
             const item = document.createElement('div');
             item.className = 'query-result-item';
+
+            const isSubscribed = subscribedSet.has(song.title + song.artist);
+            const btnClass = isSubscribed ? 'btn-danger' : 'btn-success';
+            const btnText = isSubscribed ? 'Unsubscribe' : 'Subscribe';
+
+            const button = document.createElement('button');
+            button.className = `btn ${btnClass} btn-small`;
+            button.textContent = btnText;
+            button.addEventListener('click', async () => {
+                if (isSubscribed) {
+                    await unsubscribeSong(song);
+                } else {
+                    await subscribeSong(song);
+                }
+            });
+
             item.innerHTML = `
                 <img src="/song_image/${encodeURIComponent(song.img_url.split('/').pop())}" class="artist-img">
                 <div class="music-info">
                     <h5>${song.title} - ${song.artist}</h5>
                     <small>${song.album} (${song.year})</small>
-                </div>
-                <button class="btn btn-success btn-small">Subscribe</button>
-            `;
-            item.querySelector('button').addEventListener('click', () => subscribeSong(song));
+                </div>`;
+
+            item.appendChild(button);
             resultsContainer.appendChild(item);
         });
-    }
-
-    async function subscribeSong(song) {
-        const email = getCookie('email');
-        if (!email) return alert("User not logged in.");
-
-        const payload = {
-            email: email,
-            title: song.title,
-            album: song.album,
-            artist: song.artist,
-            year: song.year,
-            img_url: song.img_url
-        };
-
-        try {
-            const response = await fetch('/subscribe_song', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                fetchSubscriptions();
-            } else {
-                console.error("Subscription failed");
-            }
-        } catch (error) {
-            console.error("Error subscribing:", error);
-        }
-    }
-
-    async function unsubscribeSong(song) {
-        const email = getCookie('email');
-        if (!email) return alert("User not logged in.");
-
-        const payload = {
-            email: email,
-            title: song.title,
-            album: song.album,
-            artist: song.artist
-        };
-
-        try {
-            const response = await fetch('/unsubscribe_song', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                fetchSubscriptions();
-            } else {
-                console.error("Unsubscription failed");
-            }
-        } catch (error) {
-            console.error("Error unsubscribing:", error);
-        }
     }
 
     async function fetchSubscriptions() {
@@ -246,23 +194,24 @@
         subList.innerHTML = `<div class="text-center my-3">Loading subscriptions...</div>`;
 
         const email = getCookie('email');
-        if (!email) {
-            subList.innerHTML = '<p class="text-danger">Email not found in session.</p>';
-            return;
-        }
+        if (!email) return;
 
         try {
             const response = await fetch(`https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/subscribe?email=${email}`);
             const data = await response.json();
 
+            subscribedSet.clear();
             subList.innerHTML = '';
 
-            if (!data.subscriptions || data.subscriptions.length === 0) {
-                subList.innerHTML = '<p class="text-muted">No subscriptions yet.</p>';
+            const subs = data.subscriptions || [];
+
+            if (subs.length === 0) {
+                subList.innerHTML = '<p class="text-center text-muted">You haven\'t subscribed to any songs yet. Try searching and subscribing!</p>';
                 return;
             }
 
-            data.subscriptions.forEach(song => {
+            subs.forEach(song => {
+                subscribedSet.add(song.title + song.artist);
                 const item = document.createElement('div');
                 item.className = 'subscription-item';
                 item.innerHTML = `
@@ -270,22 +219,81 @@
                         <h5>${song.title} - ${song.artist}</h5>
                         <small>${song.album} (${song.year})</small>
                     </div>
-                    <button class="btn btn-danger btn-small">Remove</button>
-                `;
+                    <button class="btn btn-danger btn-small">Remove</button>`;
                 item.querySelector('button').addEventListener('click', () => unsubscribeSong(song));
                 subList.appendChild(item);
             });
         } catch (error) {
-            subList.innerHTML = '<p class="text-danger">Failed to load subscriptions.</p>';
-            console.error("Subscription fetch error:", error);
+            console.error("Failed to fetch subscriptions", error);
         }
     }
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+    async function subscribeSong(song) {
+        const email = getCookie('email');
+        if (!email) return;
+
+        const payload = { email, title: song.title, album: song.album, artist: song.artist, year: song.year, img_url: song.img_url };
+
+        await fetch('/subscribe_song', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        subscribedSet.add(song.title + song.artist);
+        fetchSubscriptions();
+        populateSongs(lastFetchedSongs);
     }
+
+    async function unsubscribeSong(song) {
+        const email = getCookie('email');
+        if (!email) return;
+    
+        const payload = {
+            email,
+            title: song.title,
+            album: song.album,
+            artist: song.artist
+        };
+    
+        try {
+            const response = await fetch('/unsubscribe_song', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+    
+            if (response.ok) {
+                subscribedSet.delete(song.title + song.artist);
+                await fetchSubscriptions();
+                populateSongs(lastFetchedSongs);
+            } else {
+                console.error("Unsubscription failed");
+            }
+        } catch (error) {
+            console.error("Error unsubscribing:", error);
+        }
+    }
+    
+
+    document.getElementById('query-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        currentPage = 1;
+        fetchSongs(getCurrentFilters());
+    });
+
+    function getCurrentFilters() {
+        const form = document.getElementById('query-form');
+        return {
+            title: form.title.value,
+            year: form.year.value,
+            artist: form.artist.value,
+            album: form.album.value
+        };
+    }
+
+    let currentPage = 1;
+    const limit = 6;
 
     function renderPagination(total, page) {
         const pagination = document.getElementById('pagination');
@@ -321,26 +329,11 @@
         pagination.appendChild(next);
     }
 
-    function getCurrentFilters() {
-        const form = document.getElementById('query-form');
-        return {
-            title: form.title.value,
-            year: form.year.value,
-            artist: form.artist.value,
-            album: form.album.value
-        };
-    }
-
-    document.getElementById('query-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        currentPage = 1;
-        fetchSongs(getCurrentFilters());
-    });
-
     document.addEventListener('DOMContentLoaded', () => {
         fetchSongs();
         fetchSubscriptions();
     });
+    
 </script>
 </body>
 </html>
