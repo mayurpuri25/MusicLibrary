@@ -1,555 +1,614 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Home Page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Winky+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Winky+Sans:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        body {
-            font-family: 'Winky Sans', Arial, sans-serif;
-            padding: 20px;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #fbc2eb, #a6c1ee, #84fab0, #8fd3f4);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
+      body {
+        font-family: "Winky Sans", Arial, sans-serif;
+        padding: 20px;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #fbc2eb, #a6c1ee, #84fab0, #8fd3f4);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
         }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
 
-        .user-area, .subscription-area, .query-area {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-            padding: 20px;
-            color: #333;
-        }
+      .user-area,
+      .subscription-area,
+      .query-area {
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px;
+        padding: 20px;
+        color: #333;
+      }
 
-        .logout-link {
-            text-align: right;
-            margin-bottom: 20px;
-        }
+      .logout-link {
+        text-align: right;
+        margin-bottom: 20px;
+      }
 
-        .subscription-item, .query-result-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.5);
-        }
+      .subscription-item,
+      .query-result-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+      }
 
-        .music-info {
-            flex: 1;
-        }
+      .music-info {
+        flex: 1;
+      }
 
-        .music-info h5 {
-            margin: 0;
-        }
+      .music-info h5 {
+        margin: 0;
+      }
 
-        .artist-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 6px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
+      .artist-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 6px;
+        object-fit: cover;
+        margin-right: 15px;
+      }
 
-        .btn-small {
-            padding: 5px 10px;
-            font-size: 14px;
-        }
+      .btn-small {
+        padding: 5px 10px;
+        font-size: 14px;
+      }
 
-        input[type="text"] {
-            background: rgba(255, 255, 255, 0.5);
-            border: none;
-            border-radius: 8px;
-        }
+      input[type="text"] {
+        background: rgba(255, 255, 255, 0.5);
+        border: none;
+        border-radius: 8px;
+      }
 
-        .image-wrapper {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            margin-right: 15px;
-        }
-        
-        .image-wrapper .spinner-border {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-        
-        .image-wrapper img.artist-img {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 6px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        
+      .image-wrapper {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+      }
+
+      .image-wrapper .spinner-border {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+      }
+
+      .image-wrapper img.artist-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
     </style>
-</head>
-<body>
-
-<div class="logout-link">
-    <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
-</div>
-
-<div class="user-area">
-    <h4>Welcome, <span id="user-name">{{ username }}</span>!</h4>
-</div>
-
-<div class="subscription-area">
-    <h4>Your Subscribed Songs</h4>
-    <div id="subscription-list">
-        <p class="text-muted">No subscriptions yet.</p>
+  </head>
+  <body>
+    <div class="logout-link">
+      <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
     </div>
-</div>
 
-<div class="query-area">
-    <h4>Query Songs</h4>
-    <form id="query-form">
+    <div class="user-area">
+      <h4>Welcome, <span id="user-name">{{ username }}</span>!</h4>
+    </div>
+
+    <div class="subscription-area">
+      <h4>Your Subscribed Songs</h4>
+      <div id="subscription-list">
+        <p class="text-muted">No subscriptions yet.</p>
+      </div>
+    </div>
+
+    <div class="query-area">
+      <h4>Query Songs</h4>
+      <form id="query-form">
         <div class="row">
-            <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Title" name="title">
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Year" name="year">
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Artist" name="artist">
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Album" name="album">
-            </div>
-            <div class="col-md-1">
-                <button type="submit" class="btn btn-primary">Query</button>
-            </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Title"
+              name="title"
+            />
+          </div>
+          <div class="col-md-2">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Year"
+              name="year"
+            />
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Artist"
+              name="artist"
+            />
+          </div>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Album"
+              name="album"
+            />
+          </div>
+          <div class="col-md-1">
+            <button type="submit" class="btn btn-primary">Query</button>
+          </div>
         </div>
-    </form>
+      </form>
 
-    <div id="query-results" class="mt-3"></div>
-    <div id="pagination" class="text-center mt-4"></div>
-</div>
+      <div id="query-results" class="mt-3"></div>
+      <div id="pagination" class="text-center mt-4"></div>
+    </div>
 
-<script>
-    window.history.replaceState(null, '', window.location.href);
+    <script>
+      // Completely replace login in history (prevent back navigation to login)
+      if (
+        window.performance &&
+        window.performance.navigation.type ===
+          window.performance.navigation.TYPE_NAVIGATE
+      ) {
+        window.history.pushState(null, "", window.location.href);
+        window.history.replaceState(null, "", window.location.href);
 
-    const subscribedSet = new Set();
-    let lastFetchedSongs = [];
+        window.addEventListener("popstate", function () {
+          history.pushState(null, "", window.location.href);
+        });
+      }
 
-    function getCookie(name) {
+      const subscribedSet = new Set();
+      let lastFetchedSongs = [];
+
+      function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
+        if (parts.length === 2) return parts.pop().split(";").shift();
+      }
 
-    async function fetchSongs(filters = {}) {
-        const url = new URL('/songs', window.location.origin);
-        Object.keys(filters).forEach(key => url.searchParams.append(key, filters[key]));
-        url.searchParams.append('page', currentPage);
-        url.searchParams.append('limit', limit);
+      async function fetchSongs(filters = {}) {
+        const url = new URL("/songs", window.location.origin);
+        Object.keys(filters).forEach((key) =>
+          url.searchParams.append(key, filters[key])
+        );
+        url.searchParams.append("page", currentPage);
+        url.searchParams.append("limit", limit);
 
-        document.getElementById('query-results').innerHTML = `
+        document.getElementById("query-results").innerHTML = `
             <div class="d-flex justify-content-center align-items-center my-4">
                 <div class="spinner-border text-primary" role="status"></div>
                 <span class="ms-2 fw-semibold">Loading songs...</span>
             </div>`;
 
         try {
-            const response = await fetch(url);
-            const data = await response.json();
-            lastFetchedSongs = data.results;
-            console.log("SOngs:",data.results)
-            populateSongs(data.results);
-            renderPagination(data.total, data.page);
+          const response = await fetch(url);
+          const data = await response.json();
+          lastFetchedSongs = data.results;
+          console.log("SOngs:", data.results);
+          populateSongs(data.results);
+          renderPagination(data.total, data.page);
         } catch (error) {
-            console.error("Error loading songs:", error);
-            document.getElementById('query-results').innerHTML = `<div class="alert alert-danger">Failed to load songs.</div>`;
+          console.error("Error loading songs:", error);
+          document.getElementById(
+            "query-results"
+          ).innerHTML = `<div class="alert alert-danger">Failed to load songs.</div>`;
         }
-    }
+      }
 
-    function populateSongs(songs) {
-        const resultsContainer = document.getElementById('query-results');
-        resultsContainer.innerHTML = '';
-    
+      function populateSongs(songs) {
+        const resultsContainer = document.getElementById("query-results");
+        resultsContainer.innerHTML = "";
+
         if (!songs || songs.length === 0) {
-            resultsContainer.innerHTML = `
+          resultsContainer.innerHTML = `
                 <div class="alert alert-warning text-center mt-3">
                     No result is retrieved. Please query again.
                 </div>`;
-            return;
+          return;
         }
-    
-        songs.forEach(song => {
-            const item = document.createElement('div');
-            item.className = 'query-result-item';
-    
-            const isSubscribed = subscribedSet.has(song.title + song.artist);
-            const btnClass = isSubscribed ? 'btn-danger' : 'btn-success';
-            const btnText = isSubscribed ? 'Unsubscribe' : 'Subscribe';
-    
-            // Create wrapper with spinner and image
-            const wrapper = document.createElement('div');
-            wrapper.className = 'image-wrapper';
-            wrapper.innerHTML = `
+
+        songs.forEach((song) => {
+          const item = document.createElement("div");
+          item.className = "query-result-item";
+
+          const isSubscribed = subscribedSet.has(song.title + song.artist);
+          const btnClass = isSubscribed ? "btn-danger" : "btn-success";
+          const btnText = isSubscribed ? "Unsubscribe" : "Subscribe";
+
+          // Create wrapper with spinner and image
+          const wrapper = document.createElement("div");
+          wrapper.className = "image-wrapper";
+          wrapper.innerHTML = `
                 <div class="spinner-border text-secondary" role="status"></div>
                 <img src="${song.img_url}" class="artist-img" alt="artist">`;
-    
-            const img = wrapper.querySelector('img');
-            img.onload = () => {
-                img.style.opacity = '1';
-                wrapper.querySelector('.spinner-border').style.display = 'none';
-            };
-            img.onerror = () => {
-                img.src = 'https://via.placeholder.com/60x60?text=♪';
-                img.style.opacity = '1';
-                wrapper.querySelector('.spinner-border').style.display = 'none';
-            };
-    
-            const info = document.createElement('div');
-            info.className = 'music-info';
-            info.innerHTML = `
+
+          const img = wrapper.querySelector("img");
+          img.onload = () => {
+            img.style.opacity = "1";
+            wrapper.querySelector(".spinner-border").style.display = "none";
+          };
+          img.onerror = () => {
+            img.src = "https://via.placeholder.com/60x60?text=♪";
+            img.style.opacity = "1";
+            wrapper.querySelector(".spinner-border").style.display = "none";
+          };
+
+          const info = document.createElement("div");
+          info.className = "music-info";
+          info.innerHTML = `
                 <h5>${song.title} - ${song.artist}</h5>
                 <small>${song.album} (${song.year})</small>`;
-    
-            const button = document.createElement('button');
-            button.className = `btn ${btnClass} btn-small`;
-            button.textContent = btnText;
-            button.addEventListener('click', async () => {
-                if (isSubscribed) {
-                    await unsubscribeSong(song, button);
-                } else {
-                    await subscribeSong(song, button);
-                }
-            });            
-    
+
+          const button = document.createElement("button");
+          button.className = `btn ${btnClass} btn-small`;
+          button.textContent = btnText;
+          button.addEventListener("click", async () => {
+            if (isSubscribed) {
+              await unsubscribeSong(song, button);
+            } else {
+              await subscribeSong(song, button);
+            }
+          });
+
+          item.appendChild(wrapper);
+          item.appendChild(info);
+          item.appendChild(button);
+          resultsContainer.appendChild(item);
+        });
+      }
+
+      async function fetchSubscriptions() {
+        const subList = document.getElementById("subscription-list");
+        subList.innerHTML = `<div class="text-center my-3">Loading subscriptions...</div>`;
+
+        const email = getCookie("email");
+        if (!email) return;
+
+        try {
+          const response = await fetch(
+            `https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/subscribe?email=${email}`
+          );
+          const data = await response.json();
+
+          subscribedSet.clear();
+          subList.innerHTML = "";
+
+          const subs = data.subscriptions || [];
+
+          if (subs.length === 0) {
+            subList.innerHTML =
+              '<p class="text-center text-muted">You haven\'t subscribed to any songs yet. Try searching and subscribing!</p>';
+            return;
+          }
+
+          // ✅ Always update the full subscribedSet with ALL songs
+          subscribedSet.clear();
+          subs.forEach((song) => {
+            subscribedSet.add(song.title + song.artist);
+          });
+
+          // 🔁 Then paginate for UI
+          const totalPages = Math.ceil(subs.length / subLimit);
+          subPage = Math.max(1, Math.min(subPage, totalPages));
+          const start = (subPage - 1) * subLimit;
+          const paginatedSubs = subs.slice(start, start + subLimit);
+
+          paginatedSubs.forEach((song) => {
+            subscribedSet.add(song.title + song.artist);
+            const item = document.createElement("div");
+            item.className = "subscription-item";
+
+            // Image wrapper with spinner
+            const wrapper = document.createElement("div");
+            wrapper.className = "image-wrapper";
+            wrapper.innerHTML = `
+                    <div class="spinner-border text-secondary" role="status"></div>
+                    <img src="${song.img_url}" class="artist-img" alt="artist">`;
+
+            const img = wrapper.querySelector("img");
+            img.onload = () => {
+              img.style.opacity = "1";
+              wrapper.querySelector(".spinner-border").style.display = "none";
+            };
+            img.onerror = () => {
+              img.src = "https://via.placeholder.com/60x60?text=♪";
+              img.style.opacity = "1";
+              wrapper.querySelector(".spinner-border").style.display = "none";
+            };
+
+            const info = document.createElement("div");
+            info.className = "music-info";
+            info.innerHTML = `
+                    <h5>${song.title} - ${song.artist}</h5>
+                    <small>${song.album} (${song.year})</small>`;
+
+            const button = document.createElement("button");
+            button.className = "btn btn-danger btn-small";
+            button.textContent = "Remove";
+            button.addEventListener("click", () =>
+              unsubscribeSong(song, button)
+            );
+
             item.appendChild(wrapper);
             item.appendChild(info);
             item.appendChild(button);
-            resultsContainer.appendChild(item);
-        });
-    }
-    
-    
+            subList.appendChild(item);
+          });
 
-    async function fetchSubscriptions() {
-        const subList = document.getElementById('subscription-list');
-        subList.innerHTML = `<div class="text-center my-3">Loading subscriptions...</div>`;
-    
-        const email = getCookie('email');
-        if (!email) return;
-    
-        try {
-            const response = await fetch(`https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/subscribe?email=${email}`);
-            const data = await response.json();
-    
-            subscribedSet.clear();
-            subList.innerHTML = '';
-    
-            const subs = data.subscriptions || [];
-            
-            if (subs.length === 0) {
-                subList.innerHTML = '<p class="text-center text-muted">You haven\'t subscribed to any songs yet. Try searching and subscribing!</p>';
-                return;
-            }
-            
-            // ✅ Always update the full subscribedSet with ALL songs
-            subscribedSet.clear();
-            subs.forEach(song => {
-                subscribedSet.add(song.title + song.artist);
-            });
-
-            // 🔁 Then paginate for UI
-            const totalPages = Math.ceil(subs.length / subLimit);
-            subPage = Math.max(1, Math.min(subPage, totalPages));
-            const start = (subPage - 1) * subLimit;
-            const paginatedSubs = subs.slice(start, start + subLimit);
-
-
-            paginatedSubs.forEach(song => {
-                subscribedSet.add(song.title + song.artist);
-                const item = document.createElement('div');
-                item.className = 'subscription-item';
-            
-                // Image wrapper with spinner
-                const wrapper = document.createElement('div');
-                wrapper.className = 'image-wrapper';
-                wrapper.innerHTML = `
-                    <div class="spinner-border text-secondary" role="status"></div>
-                    <img src="${song.img_url}" class="artist-img" alt="artist">`;
-            
-                const img = wrapper.querySelector('img');
-                img.onload = () => {
-                    img.style.opacity = '1';
-                    wrapper.querySelector('.spinner-border').style.display = 'none';
-                };
-                img.onerror = () => {
-                    img.src = 'https://via.placeholder.com/60x60?text=♪';
-                    img.style.opacity = '1';
-                    wrapper.querySelector('.spinner-border').style.display = 'none';
-                };
-            
-                const info = document.createElement('div');
-                info.className = 'music-info';
-                info.innerHTML = `
-                    <h5>${song.title} - ${song.artist}</h5>
-                    <small>${song.album} (${song.year})</small>`;
-            
-                const button = document.createElement('button');
-                button.className = 'btn btn-danger btn-small';
-                button.textContent = 'Remove';
-                button.addEventListener('click', () => unsubscribeSong(song, button));
-            
-                item.appendChild(wrapper);
-                item.appendChild(info);
-                item.appendChild(button);
-                subList.appendChild(item);
-            });
-            
-    
-            renderSubPagination(subs.length, subPage);
-    
+          renderSubPagination(subs.length, subPage);
         } catch (error) {
-            console.error("Failed to fetch subscriptions", error);
-            subList.innerHTML = '<div class="alert alert-danger">Failed to load subscriptions.</div>';
+          console.error("Failed to fetch subscriptions", error);
+          subList.innerHTML =
+            '<div class="alert alert-danger">Failed to load subscriptions.</div>';
         }
-    }
+      }
 
-    function setButtonLoading(button, isLoading) {
+      function setButtonLoading(button, isLoading) {
         if (isLoading) {
-            button.disabled = true;
-            button.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`;
+          button.disabled = true;
+          button.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Loading...`;
         } else {
-            button.disabled = false;
-            const isSubscribed = button.classList.contains('btn-danger');
-            button.innerHTML = isSubscribed ? 'Unsubscribe' : 'Subscribe';
+          button.disabled = false;
+          const isSubscribed = button.classList.contains("btn-danger");
+          button.innerHTML = isSubscribed ? "Unsubscribe" : "Subscribe";
         }
-    }
-    
-    
-    async function subscribeSong(song, button) {
-        const email = getCookie('email');
+      }
+
+      async function subscribeSong(song, button) {
+        const email = getCookie("email");
         if (!email) return;
-    
-        setButtonLoading(button, true);
-    
-        const payload = {
-            email,
-            title: song.title,
-            album: song.album,
-            artist: song.artist,
-            year: song.year,
-            img_url: song.img_url
-        };
-    
-        try {
-            const response = await fetch('/subscribe_song', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-    
-            if (!response.ok) throw new Error();
-    
-            subscribedSet.add(song.title + song.artist);
-            await fetchSubscriptions();
-            await populateSongs(lastFetchedSongs);
-            showToast(`Subscribed to ${song.title}`);
-        } catch (error) {
-            console.error("Subscription failed", error);
-            showToast("Failed to subscribe.", true);
-        } finally {
-            setButtonLoading(button, false);
-        }
-    }
-    
 
-    async function unsubscribeSong(song, button) {
-        const email = getCookie('email');
+        setButtonLoading(button, true);
+
+        const payload = {
+          email,
+          title: song.title,
+          album: song.album,
+          artist: song.artist,
+          year: song.year,
+          img_url: song.img_url,
+        };
+
+        try {
+          const response = await fetch("/subscribe_song", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) throw new Error();
+
+          subscribedSet.add(song.title + song.artist);
+          await fetchSubscriptions();
+          await populateSongs(lastFetchedSongs);
+          showToast(`Subscribed to ${song.title}`);
+        } catch (error) {
+          console.error("Subscription failed", error);
+          showToast("Failed to subscribe.", true);
+        } finally {
+          setButtonLoading(button, false);
+        }
+      }
+
+      async function unsubscribeSong(song, button) {
+        const email = getCookie("email");
         if (!email) return;
-    
+
         setButtonLoading(button, true);
-    
+
         const payload = {
-            email,
-            title: song.title,
-            album: song.album,
-            artist: song.artist
+          email,
+          title: song.title,
+          album: song.album,
+          artist: song.artist,
         };
-    
+
         try {
-            const response = await fetch('/unsubscribe_song', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-    
-            if (!response.ok) throw new Error();
-    
-            subscribedSet.delete(song.title + song.artist);
-            await fetchSubscriptions();
-            populateSongs(lastFetchedSongs);
-            showToast(`Unsubscribed from ${song.title}`);
+          const response = await fetch("/unsubscribe_song", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) throw new Error();
+
+          subscribedSet.delete(song.title + song.artist);
+          await fetchSubscriptions();
+          populateSongs(lastFetchedSongs);
+          showToast(`Unsubscribed from ${song.title}`);
         } catch (error) {
-            console.error("Error unsubscribing:", error);
-            showToast("Failed to unsubscribe.", true);
+          console.error("Error unsubscribing:", error);
+          showToast("Failed to unsubscribe.", true);
         } finally {
-            setButtonLoading(button, false);
+          setButtonLoading(button, false);
         }
-    }
-    
-    
+      }
 
-    document.getElementById('query-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        currentPage = 1;
-        fetchSongs(getCurrentFilters());
-    });
+      document
+        .getElementById("query-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          currentPage = 1;
+          fetchSongs(getCurrentFilters());
+        });
 
-    function getCurrentFilters() {
-        const form = document.getElementById('query-form');
+      function getCurrentFilters() {
+        const form = document.getElementById("query-form");
         return {
-            title: form.title.value,
-            year: form.year.value,
-            artist: form.artist.value,
-            album: form.album.value
+          title: form.title.value,
+          year: form.year.value,
+          artist: form.artist.value,
+          album: form.album.value,
         };
-    }
+      }
 
-    let currentPage = 1;
-    const limit = 6;
+      let currentPage = 1;
+      const limit = 6;
 
-    let subPage = 1;
-    const subLimit = 4;
+      let subPage = 1;
+      const subLimit = 4;
 
-
-    function renderSubPagination(total, page) {
-        let paginationEl = document.getElementById('sub-pagination');
+      function renderSubPagination(total, page) {
+        let paginationEl = document.getElementById("sub-pagination");
         if (!paginationEl) {
-            paginationEl = document.createElement('div');
-            paginationEl.id = 'sub-pagination';
-            paginationEl.className = 'text-center mt-3';
-            document.querySelector('.subscription-area').appendChild(paginationEl);
+          paginationEl = document.createElement("div");
+          paginationEl.id = "sub-pagination";
+          paginationEl.className = "text-center mt-3";
+          document
+            .querySelector(".subscription-area")
+            .appendChild(paginationEl);
         }
-    
-        paginationEl.innerHTML = '';
+
+        paginationEl.innerHTML = "";
         const totalPages = Math.ceil(total / subLimit);
         if (totalPages <= 1) return;
-    
-        const prev = document.createElement('button');
-        prev.textContent = '← Previous';
-        prev.className = 'btn btn-outline-secondary m-1';
+
+        const prev = document.createElement("button");
+        prev.textContent = "← Previous";
+        prev.className = "btn btn-outline-secondary m-1";
         prev.disabled = page === 1;
         prev.onclick = () => {
-            subPage--;
-            fetchSubscriptions();
+          subPage--;
+          fetchSubscriptions();
         };
-    
-        const next = document.createElement('button');
-        next.textContent = 'Next →';
-        next.className = 'btn btn-outline-secondary m-1';
+
+        const next = document.createElement("button");
+        next.textContent = "Next →";
+        next.className = "btn btn-outline-secondary m-1";
         next.disabled = page === totalPages;
         next.onclick = () => {
-            subPage++;
-            fetchSubscriptions();
+          subPage++;
+          fetchSubscriptions();
         };
-    
-        const label = document.createElement('span');
-        label.className = 'mx-2 fw-bold';
+
+        const label = document.createElement("span");
+        label.className = "mx-2 fw-bold";
         label.textContent = `Page ${page} of ${totalPages}`;
-    
+
         paginationEl.appendChild(prev);
         paginationEl.appendChild(label);
         paginationEl.appendChild(next);
-    }
-    
+      }
 
-    function renderPagination(total, page) {
-        const pagination = document.getElementById('pagination');
-        pagination.innerHTML = '';
+      function renderPagination(total, page) {
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
 
         const totalPages = Math.ceil(total / limit);
         if (totalPages <= 1) return;
 
-        const prev = document.createElement('button');
-        prev.textContent = '← Previous';
-        prev.className = 'btn btn-outline-primary m-1';
+        const prev = document.createElement("button");
+        prev.textContent = "← Previous";
+        prev.className = "btn btn-outline-primary m-1";
         prev.disabled = page === 1;
         prev.onclick = () => {
-            currentPage--;
-            fetchSongs(getCurrentFilters());
+          currentPage--;
+          fetchSongs(getCurrentFilters());
         };
 
-        const next = document.createElement('button');
-        next.textContent = 'Next →';
-        next.className = 'btn btn-outline-primary m-1';
+        const next = document.createElement("button");
+        next.textContent = "Next →";
+        next.className = "btn btn-outline-primary m-1";
         next.disabled = page === totalPages;
         next.onclick = () => {
-            currentPage++;
-            fetchSongs(getCurrentFilters());
+          currentPage++;
+          fetchSongs(getCurrentFilters());
         };
 
-        const label = document.createElement('span');
-        label.className = 'mx-2 fw-bold';
+        const label = document.createElement("span");
+        label.className = "mx-2 fw-bold";
         label.textContent = `Page ${page} of ${totalPages}`;
 
         pagination.appendChild(prev);
         pagination.appendChild(label);
         pagination.appendChild(next);
-    }
+      }
 
-    document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener("DOMContentLoaded", () => {
         fetchSongs();
         fetchSubscriptions();
-    });
+      });
 
-    function showToast(message, isError = false) {
-        const toastEl = document.getElementById('flash-toast');
-        const toastBody = document.getElementById('flash-toast-body');
-    
+      function showToast(message, isError = false) {
+        const toastEl = document.getElementById("flash-toast");
+        const toastBody = document.getElementById("flash-toast-body");
+
         toastBody.textContent = message;
-    
+
         // Set background color
-        toastEl.classList.remove('bg-success', 'bg-danger');
-        toastEl.classList.add(isError ? 'bg-danger' : 'bg-success');
-    
+        toastEl.classList.remove("bg-success", "bg-danger");
+        toastEl.classList.add(isError ? "bg-danger" : "bg-success");
+
         // Initialize and show toast
         const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
         toast.show();
-    }
-    
-    
-</script>
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
-    <div id="flash-toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      }
+    </script>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
+      <div
+        id="flash-toast"
+        class="toast align-items-center text-white bg-success border-0"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
         <div class="d-flex">
-            <div class="toast-body" id="flash-toast-body">
-                Subscribed successfully!
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          <div class="toast-body" id="flash-toast-body">
+            Subscribed successfully!
+          </div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
         </div>
+      </div>
     </div>
-</div>
-
-</body>
+  </body>
 </html>
