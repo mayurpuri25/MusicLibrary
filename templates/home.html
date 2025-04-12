@@ -187,21 +187,8 @@
       <div id="pagination" class="text-center mt-4"></div>
     </div>
 
+
     <script>
-      // Completely replace login in history (prevent back navigation to login)
-      if (
-        window.performance &&
-        window.performance.navigation.type ===
-          window.performance.navigation.TYPE_NAVIGATE
-      ) {
-        window.history.pushState(null, "", window.location.href);
-        window.history.replaceState(null, "", window.location.href);
-
-        window.addEventListener("popstate", function () {
-          history.pushState(null, "", window.location.href);
-        });
-      }
-
       const subscribedSet = new Set();
       let lastFetchedSongs = [];
 

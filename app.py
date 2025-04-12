@@ -129,9 +129,6 @@ def get_songs():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'email' in session:  # or however you're tracking the user
-        return redirect(url_for('home'))
-
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -157,9 +154,9 @@ def login():
                 return resp
 
             elif response.status_code == 401:
-                flash('Incorrect password!', 'error')
+                flash('email or password is invalid', 'error')
             elif response.status_code == 404:
-                flash('User not found!', 'error')
+                flash('email or password is invalid', 'error')
             else:
                 flash('Login failed. Try again later.', 'error')
 
@@ -194,7 +191,7 @@ def register():
             elif response.status_code == 400:
                 flash('Missing fields or invalid request.', 'error')
             elif response.status_code == 409:
-                flash('User already exists.', 'error')
+                flash('The email already exists', 'error')
             else:
                 flash('Something went wrong! Try again.', 'error')
         except Exception as e:
