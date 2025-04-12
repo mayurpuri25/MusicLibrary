@@ -65,6 +65,10 @@ def song_image(image_key):
 def subscribe_song():
     subscription_data = request.json
 
+    required_fields = ['email', 'title', 'artist', 'album', 'year', 'img_url']
+    if not all(field in subscription_data for field in required_fields):
+        return jsonify({'message': 'Missing required subscription data'}), 400
+
     subscribe_api_url = 'https://oipqedkg7h.execute-api.us-east-1.amazonaws.com/prod/subscribe'
 
     try:
@@ -74,6 +78,10 @@ def subscribe_song():
     except requests.exceptions.RequestException as e:
         print('Subscription API error:', e)
         return jsonify({'message': 'Subscription failed'}), 500
+    except Exception as e:
+        print('Internal error in /subscribe_song:', e)
+        return jsonify({'message': 'Internal server error'}), 500
+
 
 
 @app.route('/songs', methods=['GET'])
@@ -121,6 +129,9 @@ def get_songs():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if 'email' in session:  # or however you're tracking the user
+        return redirect(url_for('home'))
+
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
