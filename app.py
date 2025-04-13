@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, send_file, url_for,
 import requests
 
 app = Flask(__name__)
-app.secret_key = "your_very_secret_key_here"  # Set this explicitly and clearly
+app.secret_key = "your_very_secret_key_here" 
 
 
 # Configure AWS client
@@ -144,7 +144,7 @@ def login():
                 session['username'] = username
                 session['email'] = email
 
-                # Optionally delay (if needed)
+                # delay 
                 time.sleep(1)
 
                 # Create response, set cookies for username and email, then redirect to home

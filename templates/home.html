@@ -313,13 +313,13 @@
             return;
           }
 
-          // ✅ Always update the full subscribedSet with ALL songs
+          // Always update the full subscribedSet with ALL songs
           subscribedSet.clear();
           subs.forEach((song) => {
             subscribedSet.add(song.title + song.artist);
           });
 
-          // 🔁 Then paginate for UI
+          // Then paginate for UI
           const totalPages = Math.ceil(subs.length / subLimit);
           subPage = Math.max(1, Math.min(subPage, totalPages));
           const start = (subPage - 1) * subLimit;
@@ -564,17 +564,24 @@
       function showToast(message, isError = false) {
         const toastEl = document.getElementById("flash-toast");
         const toastBody = document.getElementById("flash-toast-body");
-
+      
         toastBody.textContent = message;
-
-        // Set background color
-        toastEl.classList.remove("bg-success", "bg-danger");
-        toastEl.classList.add(isError ? "bg-danger" : "bg-success");
-
-        // Initialize and show toast
+      
+        // Reset classes
+        toastEl.classList.remove("bg-success", "bg-danger", "bg-warning");
+      
+        // Detect unsubscribe toast
+        if (message.toLowerCase().includes("unsubscribed")) {
+          toastEl.classList.add("bg-warning");
+        } else {
+          toastEl.classList.add(isError ? "bg-danger" : "bg-success");
+        }
+      
+        // Show toast
         const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
         toast.show();
       }
+      
     </script>
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1055">
       <div
